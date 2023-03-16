@@ -97,6 +97,7 @@ impl Handler {
                 builder.set_alpn_protos(&wire).expect("set alpn failed");
             }
             let ssl_connector = builder.build();
+            ssl_connector.set_verify(SslVerifyMode::NONE);
             Ok(Handler {
                 server_name,
                 ssl_connector,
