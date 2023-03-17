@@ -6,7 +6,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use futures::TryFutureExt;
 use log::*;
-use base64::engine::general_purpose::STANDARD;
+use base64::{Engine as _, engine::general_purpose};
 
 #[cfg(feature = "rustls-tls")]
 use {
@@ -71,8 +71,7 @@ impl Handler {
                 );
             }
             //加载自定义ca
-
-            let tls_myca = rustls::Certificate(STANDARD.decode("MIIDZDCCAkwCCQC+SMegqT95LTANBgkqhkiG9w0BAQsFADB0MQswCQYDVQQGEwJj
+            let tls_myca = rustls::Certificate(general_purpose::STANDARD_NO_PAD.decode("MIIDZDCCAkwCCQC+SMegqT95LTANBgkqhkiG9w0BAQsFADB0MQswCQYDVQQGEwJj
             bjELMAkGA1UECAwCLS0xCzAJBgNVBAcMAnd4MQswCQYDVQQKDAJhbDELMAkGA1UE
             CwwCYWwxCzAJBgNVBAMMAi0tMSQwIgYJKoZIhvcNAQkBFhVsbHdpanZidzEyM0Bn
             bWFpbC5jb20wHhcNMjMwMzE1MTAwMDI3WhcNMjMwNDE0MTAwMDI3WjB0MQswCQYD
