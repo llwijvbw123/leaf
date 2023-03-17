@@ -45,6 +45,7 @@ impl Handler {
             warn!("use rustls-tls");
             let mut root_cert_store = RootCertStore::empty();
             if let Some(cert) = certificate {
+                warn!("use RootCertStore");
                 let mut pem = BufReader::new(File::open(cert)?);
                 let certs = rustls_pemfile::certs(&mut pem)?;
                 let trust_anchors = certs.iter().map(|cert| {
@@ -57,6 +58,7 @@ impl Handler {
                 });
                 root_cert_store.add_server_trust_anchors(trust_anchors);
             } else {
+                warn!("use webpki_roots");
                 root_cert_store.add_server_trust_anchors(
                     webpki_roots::TLS_SERVER_ROOTS.0.iter().map(|ta| {
                         OwnedTrustAnchor::from_subject_spki_name_constraints(
