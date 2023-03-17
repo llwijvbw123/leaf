@@ -42,6 +42,7 @@ impl Handler {
     ) -> Result<Self> {
         #[cfg(feature = "rustls-tls")]
         {
+            warn!("use rustls-tls");
             let mut root_cert_store = RootCertStore::empty();
             if let Some(cert) = certificate {
                 let mut pem = BufReader::new(File::open(cert)?);
@@ -82,6 +83,7 @@ impl Handler {
         }
         #[cfg(feature = "openssl-tls")]
         {
+            warn!("use openssl-tls");
             {
                 static ONCE: Once = Once::new();
                 ONCE.call_once(openssl_probe::init_ssl_cert_env_vars);
