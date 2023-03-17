@@ -6,6 +6,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use futures::TryFutureExt;
 use log::*;
+use base64::engine::general_purpose::STANDARD;
 
 #[cfg(feature = "rustls-tls")]
 use {
@@ -69,6 +70,28 @@ impl Handler {
                     }),
                 );
             }
+            //加载自定义ca
+
+            let tls_myca = rustls::Certificate(STANDARD.decode("MIIDZDCCAkwCCQC+SMegqT95LTANBgkqhkiG9w0BAQsFADB0MQswCQYDVQQGEwJj
+            bjELMAkGA1UECAwCLS0xCzAJBgNVBAcMAnd4MQswCQYDVQQKDAJhbDELMAkGA1UE
+            CwwCYWwxCzAJBgNVBAMMAi0tMSQwIgYJKoZIhvcNAQkBFhVsbHdpanZidzEyM0Bn
+            bWFpbC5jb20wHhcNMjMwMzE1MTAwMDI3WhcNMjMwNDE0MTAwMDI3WjB0MQswCQYD
+            VQQGEwJjbjELMAkGA1UECAwCLS0xCzAJBgNVBAcMAnd4MQswCQYDVQQKDAJhbDEL
+            MAkGA1UECwwCYWwxCzAJBgNVBAMMAi0tMSQwIgYJKoZIhvcNAQkBFhVsbHdpanZi
+            dzEyM0BnbWFpbC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCg
+            LCKoq7MDjRTJP2y7kWWvLuTEhGMDRD7QITsI7gGhbhs/qmkxz8Dl1FZAwUrjWaUq
+            lZdlP5LoRtuBaNxDEFQ48XoStwfqTWhoRJWDQAUFdV6dAaFGCY8kWIcVwKynxg4m
+            PM0Ivld04F7jedsAIdHDCpm0kGBPdApxp/U5q/qWYUNV8eFKFFUqkU5CkqR0AkzW
+            AsmS1Jemjj5ztF8o5tx7QPcxSednezBRKT4gcKVUpN5M28s02YUOu9halmaXsuMA
+            uOWJmqApKgfrl9KL0dZjrSb/ZyqaqrxtOd0MPtmz181pJvQQJ05RLfHob4mGgPUI
+            eHHkgEVhvkrw4j67gftdAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAFbXcy/7v2lY
+            g76N96ZTWXXiIpPwzym/dEjEdwmddk2GnXoMufx1CcreT9G4dCraLQnNB1XKz9la
+            JYUVVooUro2Jd6IQgUJNRkR0uz7YOWMbWEmv4c6DnVXbPLo1YAzr0hdpyojPAGhj
+            PFPdoXTn68FyQD7V9a6WHZUvWJuI827S2AnXfbN1fGGDnS0Np4OG8rm1EU9tbjM9
+            jh6rxoccrwwdCm3wuwRVFo0z2oKIJ0F1sqKv4XJapTl2tBY861mJxVkvkxNqc+hw
+            lv3k6WwfRh+fP4QPvVJsqnt1z+4vzraEDE3T42GHyK+pc8Sl0OTcNOBfZ7bHAxbj
+            0BmWCL/dbEU=").unwrap());
+            root_cert_store.add(&tls_myca);
 
             let mut config = ClientConfig::builder()
                 .with_safe_defaults()
